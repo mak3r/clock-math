@@ -1,31 +1,38 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image } from 'react-native';
-import React from 'react'
+import React, { PureComponent } from "react";
+import { AppRegistry, StyleSheet, StatusBar } from "react-native";
+import { GameEngine } from "react-native-game-engine";
+import Finger  from "./components/Finger";
+import Digit from "./components/Digits";
+import { MoveFinger } from "./system";
 
-const App = () => {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-	  <Image
-	  	source={require('./assets/clock/numbers/one.png')}
-		style={{width:100, height:100, tintColor: 'rgba(12,200,110,1)', backgroundColor: 'rgba(128,19,210,1)', borderBottomLeftRadius: 20, borderTopLeftRadius: 20,resizeMode:'contain'}}
-		/>
-	  <Image
-	  	source={require('./assets/clock/numbers/two.png')}
-		style={{width:100, height:100, tintColor: 'rgba(12,200,110,1)', backgroundColor: 'rgba(128,19,210,1)', borderBottomLeftRadius: 20, borderTopLeftRadius: 20,resizeMode:'contain'}}
-		/>
-      <StatusBar style="auto" />
-    </View>
-  );
+export default class BestGameEver extends PureComponent {
+  constructor() {
+    super();
+  }
+
+  render() {
+    return (
+      <GameEngine
+        style={styles.container}
+        systems={[MoveFinger]}
+        entities={{
+          1: { position: [40,  200], renderer: <Finger />}, //-- Notice that each entity has a unique id (required)
+          2: { position: [100, 200], renderer: <Digit />}, //-- and a renderer property (optional). If no renderer
+          3: { position: [160, 200], renderer: <Finger />}, //-- is supplied with the entity - it won't get displayed.
+          4: { position: [220, 200], renderer: <Finger />},
+          5: { position: [280, 200], renderer: <Finger />}
+        }}>
+
+        <StatusBar hidden={true} />
+
+      </GameEngine>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'rgba(128,19,210,0)',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+    backgroundColor: "#FFF"
+  }
 });
-
-export default App;
