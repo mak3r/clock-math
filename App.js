@@ -3,6 +3,7 @@ import { AppRegistry, StyleSheet, StatusBar } from "react-native";
 import { GameEngine } from "react-native-game-engine";
 import Finger  from "./components/Finger";
 import Digit from "./components/Digits";
+import Clock from "./components/Clock";
 import { MoveFinger } from "./system";
 
 export default class BestGameEver extends PureComponent {
@@ -20,7 +21,8 @@ export default class BestGameEver extends PureComponent {
           2: { position: [100, 200], renderer: <Digit />}, //-- and a renderer property (optional). If no renderer
           3: { position: [160, 200], renderer: <Finger />}, //-- is supplied with the entity - it won't get displayed.
           4: { position: [220, 200], renderer: <Finger />},
-          5: { position: [280, 200], renderer: <Finger />}
+          5: { position: [280, 200], renderer: <Finger />},
+          6: { position: [40,  300], renderer: <Clock />}
         }}>
 
         <StatusBar hidden={true} />
