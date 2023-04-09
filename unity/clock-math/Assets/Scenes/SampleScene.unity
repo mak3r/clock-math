@@ -871,8 +871,8 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.022472408, g: 0.9528302, b: 0.0638275, a: 1}
-    m_HighlightedColor: {r: 0.0141509175, g: 0.786142, b: 1, a: 1}
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 1, g: 1, b: 1, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9811321, g: 0.96724814, b: 0.96724814, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
@@ -957,7 +957,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clockImage: {fileID: 427891457}
-  clockColor: {r: 0.031149892, g: 0.08337666, b: 0.9433962, a: 0.003921569}
+  clockColor: {r: 1, g: 1, b: 1, a: 0.003921569}
   button: {fileID: 427891456}
   timeDisplayScript: {fileID: 519420033}
 --- !u!1 &519420028

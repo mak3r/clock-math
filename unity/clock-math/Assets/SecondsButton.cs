@@ -48,7 +48,6 @@ public class SecondsButton : MonoBehaviour
             float fillAmount = seconds / 60f; // Convert time to fill amount (0 to 1)
             clockImage.fillAmount = fillAmount; // Set the fill amount of the circle
         }
-        clockImage.color = clockColor;
     }
 
     public bool EmulateClick() {
@@ -56,13 +55,4 @@ public class SecondsButton : MonoBehaviour
         return isTimeStopped;
     }
 
-    public void OnPointerEnter() {
-        Debug.Log("ColorChanger.OnPointerEnter()");
-        clockImage.color = hoverColor;
-    }
-
-    public void OnPointerExit() {
-        Debug.Log("ColorChanger.OnPointerExit()");
-        clockImage.color = clockColor;
-    }
 }
