@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ColorChanger : MonoBehaviour
+public class SecondsButton : MonoBehaviour
 {
 
     [SerializeField] private Image clockImage;
     [SerializeField] private Color clockColor;
+    [SerializeField] private Button button;
+    [SerializeField] private TimeDisplayScript timeDisplayScript;
     private Color defaultColor = Color.green;
     private Color selectedColor = Color.red;
-    private Color currentColor;
     private Color hoverColor = Color.cyan;
     private bool isTimeStopped = false;
 
@@ -20,7 +21,7 @@ public class ColorChanger : MonoBehaviour
 
         clockColor.a = 1;
         clockImage.color = defaultColor;
-        currentColor = clockImage.color;
+        clockColor = clockImage.color;
     }
 
 
@@ -35,7 +36,8 @@ public class ColorChanger : MonoBehaviour
             clockImage.color = selectedColor;
             isTimeStopped = true;
         }
-        currentColor = clockImage.color;
+        clockColor = clockImage.color;
+        timeDisplayScript.StopTime(isTimeStopped);
     }
 
     private void Update()
@@ -46,14 +48,12 @@ public class ColorChanger : MonoBehaviour
             float fillAmount = seconds / 60f; // Convert time to fill amount (0 to 1)
             clockImage.fillAmount = fillAmount; // Set the fill amount of the circle
         }
+        clockImage.color = clockColor;
     }
 
-    public void OnSelect() {
-        Debug.Log("ColorChanger.onSelect()");
-    }
-
-    public void OnDeselect() {
-        Debug.Log("ColorChanger.OnDeselect()");
+    public bool EmulateClick() {
+        button.onClick.Invoke();
+        return isTimeStopped;
     }
 
     public void OnPointerEnter() {
@@ -63,6 +63,6 @@ public class ColorChanger : MonoBehaviour
 
     public void OnPointerExit() {
         Debug.Log("ColorChanger.OnPointerExit()");
-        clockImage.color = currentColor;
+        clockImage.color = clockColor;
     }
 }

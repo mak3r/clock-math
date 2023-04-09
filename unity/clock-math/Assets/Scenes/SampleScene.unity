@@ -958,6 +958,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clockImage: {fileID: 427891457}
   clockColor: {r: 0.031149892, g: 0.08337666, b: 0.9433962, a: 0.003921569}
+  button: {fileID: 427891456}
+  timeDisplayScript: {fileID: 519420033}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1073,6 +1075,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: ddc2d226cdd5b48718838c7c7109630e, type: 3}
   - {fileID: 21300000, guid: b6a87e8cf2207451dac6627e71fc1124, type: 3}
   - {fileID: 21300000, guid: 3536ad16dc1f14473a38f4702381c405, type: 3}
+  secondsButtonScript: {fileID: 427891459}
 --- !u!114 &519420034
 MonoBehaviour:
   m_ObjectHideFlags: 0
