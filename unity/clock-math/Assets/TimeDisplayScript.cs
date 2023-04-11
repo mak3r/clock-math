@@ -14,13 +14,19 @@ public class TimeDisplayScript : MonoBehaviour
     };
     private SpriteRenderer separator;
     private SpriteRenderer mathA;
+    private SpriteRenderer mathB;
+    private Sprite lastSpriteSeparator;
+    private Sprite lastSpriteMathA;
+    private Sprite lastSpriteMathB;
     
 
     private void Start()
     {
         //DumpSpriteArray();
+        mathA.sprite = null;
+        mathB.sprite = null;
         Activate("mathA",false);
-
+        Activate("mathB",false);
     }
 
     private void Awake()
@@ -30,6 +36,7 @@ public class TimeDisplayScript : MonoBehaviour
         clockRowRectTrans = clockRow.GetComponent<RectTransform>();
         separator = GameObject.Find("separator").GetComponent<SpriteRenderer>();
         mathA = GameObject.Find("mathA").GetComponent<SpriteRenderer>();
+        mathB = GameObject.Find("mathB").GetComponent<SpriteRenderer>();
     }
 
     private void Update()
@@ -38,6 +45,7 @@ public class TimeDisplayScript : MonoBehaviour
             MathMode();
         } else {
             Activate("mathA", false);
+            Activate("mathB", false);
             ClockMode();
         }
 
@@ -45,6 +53,7 @@ public class TimeDisplayScript : MonoBehaviour
 
     public void StopTime(bool stop) {
         isMathMode = stop;
+        ResetLayout();
     }
 
     private void MathMode() {
@@ -74,7 +83,8 @@ public class TimeDisplayScript : MonoBehaviour
         }
 
         if(separator) {
-            separator.sprite = numberSprites[(int)SPRITES.COLON]; 
+            separator.sprite = numberSprites[(int)SPRITES.COLON];
+            lastSpriteSeparator = separator.sprite; 
             separator.enabled = seconds % 2 == 0;
         }
 
@@ -92,32 +102,71 @@ public class TimeDisplayScript : MonoBehaviour
 
     private void ResetLayout() {
         // Calculate the size of the LayoutGroup
-        int childCount = clockRowRectTrans.childCount;
-        float totalWidth = layoutGroup.GetComponent<RectTransform>().rect.width;
-        if (childCount == 6) {
-            layoutGroup.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 8f);
-        } else if (childCount == 7) {
-            layoutGroup.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 10f);
+        // Debug.Log("TimeDisplayScript.ResetLayout()");
+        if (isMathMode) {
+            GameObject obj = clockRowRectTrans.Find("hourtens").gameObject;
+            if (obj.activeSelf) {
+                layoutGroup.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 12f);
+            } else {
+                layoutGroup.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 10f);
+            }
         } else {
             layoutGroup.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 6f);
         }
     }
 
-    public void Activate(string name, bool active) {
-        // Find and get ClockRow RectTransform component
-        GameObject clockRow = GameObject.Find("ClockRow");
-        if (clockRow != null)
-        {
-            GameObject obj = clockRowRectTrans.Find(name).gameObject;
-            obj.SetActive(active);
-            if (active) {
-                if (name == "mathA") {
-                    mathA.sprite = numberSprites[(int)SPRITES.PLUS];
-                    isMathMode = secondsButtonScript.EmulateClick();
-                }
-            }
+    private void Activate(string name, bool active) {
+        GameObject obj = clockRowRectTrans.Find(name).gameObject;
+        obj.SetActive(active);
+    }
+
+    private Sprite GetSymbolByName(string name) {
+        Sprite symbolSprite = null;
+        if (name == "Plus") {
+            symbolSprite = numberSprites[(int)SPRITES.PLUS];
+        } else if (name == "Minus") {
+            symbolSprite = numberSprites[(int)SPRITES.MINUS];
+        } else if (name == "Equals") {
+            symbolSprite = numberSprites[(int)SPRITES.EQUALS];
         }
-        ResetLayout();
+        return symbolSprite;
+
+    }
+
+    public void UpdateSymbol(string targetObj, string symbol) {
+        // Debug.Log("TimeDisplayScript.UpdateSymbol()");
+        GameObject obj = clockRowRectTrans.Find(targetObj).gameObject;
+        Activate(targetObj, true);
+        Sprite sprite = GetSymbolByName(symbol);
+        if (targetObj == "mathA") {
+            lastSpriteMathA = mathA.sprite;
+            mathA.sprite = sprite;
+        } else if (targetObj == "mathB") {
+            lastSpriteMathB = mathB.sprite;
+            mathB.sprite = GetSymbolByName(symbol);
+        } else if (targetObj == "separator") {
+            lastSpriteSeparator = separator.sprite;
+            separator.sprite = GetSymbolByName(symbol);
+        }
+        isMathMode = (sprite != null && secondsButtonScript.Freeze());
+    }
+
+    public void ResetSymbol(string targetObj, string symbol) {
+        // Debug.Log("TimeDisplayScript.ResetSymbol()");
+        GameObject obj = clockRowRectTrans.Find(targetObj).gameObject;
+        if (targetObj == "mathA") {
+            mathA.sprite = lastSpriteMathA;
+            if (mathA.sprite == null) {
+                Activate(targetObj, false);
+            }
+        } else if (targetObj == "mathB") {
+            mathB.sprite = lastSpriteMathB;
+            if (mathB.sprite == null) {
+                Activate(targetObj, false);
+            }
+        } else if (targetObj == "separator") {
+            separator.sprite = lastSpriteSeparator;
+        }
     }
 
 /**

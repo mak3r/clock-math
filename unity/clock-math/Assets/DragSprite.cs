@@ -27,7 +27,7 @@ public class DragSprite : MonoBehaviour
 
     private void OnMouseDown()
     {
-        Debug.Log("Mouse Down ********* ");
+        // Debug.Log("Mouse Down ********* ");
         selectedObject = GetComponent<Rigidbody2D>();
         basePosition = selectedObject.position;
         selectedObject = null;
@@ -46,7 +46,7 @@ public class DragSprite : MonoBehaviour
 
     private void OnMouseUp()
     {
-        Debug.Log("Mouse Up ********* ");
+        // Debug.Log("Mouse Up ********* ");
         selectedObject.MovePosition(basePosition);
     }
 
@@ -70,21 +70,17 @@ public class DragSprite : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("DragSprite.OnTriggerEnter2D()");
-        if (other.CompareTag("hourones"))
-        {
-            timeDisplayScript.Activate("mathA", true);
+        // Debug.Log("DragSprite.OnTriggerEnter2D()");
+        timeDisplayScript.UpdateSymbol(other.gameObject.tag, gameObject.tag);
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        // Debug.Log("DragSprite.OnTriggerExit2D()");
+        if (Input.GetMouseButton(0)) {
+            timeDisplayScript.ResetSymbol(other.gameObject.tag, gameObject.tag);
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        Debug.Log("DragSprite.OnCollisionEnter2D()");
-        if (collision.gameObject.CompareTag("hourones"))
-        {
-            Debug.Log("Collision detected with static object");
-            // Add code here to handle the collision
-        }
-    }
 
 }

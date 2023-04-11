@@ -25,19 +25,14 @@ public class SecondsButton : MonoBehaviour
     }
 
 
-    // Update is called once per frame
     public void OnClick()
     {
-        Debug.Log("ColorChanger.OnClick()");
         if (isTimeStopped) {
-            clockImage.color = defaultColor;
-            isTimeStopped = false;
+            Resume();
         } else {
-            clockImage.color = selectedColor;
-            isTimeStopped = true;
+            Freeze();
         }
-        clockColor = clockImage.color;
-        timeDisplayScript.StopTime(isTimeStopped);
+        
     }
 
     private void Update()
@@ -50,8 +45,17 @@ public class SecondsButton : MonoBehaviour
         }
     }
 
-    public bool EmulateClick() {
-        button.onClick.Invoke();
+    public bool Freeze() {
+        clockImage.color = selectedColor;
+        isTimeStopped = true;
+        timeDisplayScript.StopTime(isTimeStopped);
+        return isTimeStopped;
+    }
+
+    public bool Resume() {
+        clockImage.color = defaultColor;
+        isTimeStopped = false;
+        timeDisplayScript.StopTime(isTimeStopped);
         return isTimeStopped;
     }
 
