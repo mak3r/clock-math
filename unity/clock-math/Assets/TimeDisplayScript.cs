@@ -25,8 +25,6 @@ public class TimeDisplayScript : MonoBehaviour
         //DumpSpriteArray();
         mathA.sprite = null;
         mathB.sprite = null;
-        Activate("mathA",false);
-        Activate("mathB",false);
     }
 
     private void Awake()
@@ -44,8 +42,8 @@ public class TimeDisplayScript : MonoBehaviour
         if (isMathMode) {
             MathMode();
         } else {
-            Activate("mathA", false);
-            Activate("mathB", false);
+            mathA.sprite = null;
+            mathB.sprite = null;
             ClockMode();
         }
 
@@ -103,15 +101,19 @@ public class TimeDisplayScript : MonoBehaviour
     private void ResetLayout() {
         // Calculate the size of the LayoutGroup
         // Debug.Log("TimeDisplayScript.ResetLayout()");
+        GameObject obj = clockRowRectTrans.Find("hourtens").gameObject;
         if (isMathMode) {
-            GameObject obj = clockRowRectTrans.Find("hourtens").gameObject;
             if (obj.activeSelf) {
                 layoutGroup.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 12f);
             } else {
                 layoutGroup.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 10f);
             }
         } else {
-            layoutGroup.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 6f);
+            if (obj.activeSelf) {
+                layoutGroup.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 8f);
+            } else {
+                layoutGroup.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 6f);
+            }
         }
     }
 
@@ -135,18 +137,18 @@ public class TimeDisplayScript : MonoBehaviour
 
     public void UpdateSymbol(string targetObj, string symbol) {
         // Debug.Log("TimeDisplayScript.UpdateSymbol()");
+        // Debug.Log("targetObj: " + targetObj + ", symbol: " + symbol);
         GameObject obj = clockRowRectTrans.Find(targetObj).gameObject;
-        Activate(targetObj, true);
         Sprite sprite = GetSymbolByName(symbol);
         if (targetObj == "mathA") {
             lastSpriteMathA = mathA.sprite;
             mathA.sprite = sprite;
         } else if (targetObj == "mathB") {
             lastSpriteMathB = mathB.sprite;
-            mathB.sprite = GetSymbolByName(symbol);
+            mathB.sprite = sprite;
         } else if (targetObj == "separator") {
             lastSpriteSeparator = separator.sprite;
-            separator.sprite = GetSymbolByName(symbol);
+            separator.sprite = sprite;
         }
         isMathMode = (sprite != null && secondsButtonScript.Freeze());
     }
@@ -156,14 +158,8 @@ public class TimeDisplayScript : MonoBehaviour
         GameObject obj = clockRowRectTrans.Find(targetObj).gameObject;
         if (targetObj == "mathA") {
             mathA.sprite = lastSpriteMathA;
-            if (mathA.sprite == null) {
-                Activate(targetObj, false);
-            }
         } else if (targetObj == "mathB") {
             mathB.sprite = lastSpriteMathB;
-            if (mathB.sprite == null) {
-                Activate(targetObj, false);
-            }
         } else if (targetObj == "separator") {
             separator.sprite = lastSpriteSeparator;
         }
