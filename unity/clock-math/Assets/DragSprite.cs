@@ -9,6 +9,7 @@ public class DragSprite : MonoBehaviour
     private Rigidbody2D selectedObject;
     private Vector3 offset;
     private Vector3 mousePosition;
+    private Vector3 touchPosition;
     private Vector2 basePosition;
 
     private void Start()
@@ -40,7 +41,8 @@ public class DragSprite : MonoBehaviour
 
     private void FixedUpdate() {
         if (selectedObject) {
-            selectedObject.MovePosition(mousePosition + offset);
+            // selectedObject.MovePosition(mousePosition + offset);
+            selectedObject.MovePosition(touchPosition + offset);
         }
     }
 
@@ -52,19 +54,37 @@ public class DragSprite : MonoBehaviour
 
     void Update()
     {
-        mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        if (Input.GetMouseButtonDown(0))
-        {
-            Collider2D targetObject = Physics2D.OverlapPoint(mousePosition);
-            if (targetObject)
-            {
-                selectedObject = targetObject.transform.gameObject.GetComponent<Rigidbody2D>();
-                offset = selectedObject.transform.position - mousePosition;
+        // mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        // if (Input.GetMouseButtonDown(0))
+        // {
+        //     Collider2D targetObject = Physics2D.OverlapPoint(mousePosition);
+        //     if (targetObject)
+        //     {
+        //         selectedObject = targetObject.transform.gameObject.GetComponent<Rigidbody2D>();
+        //         offset = selectedObject.transform.position - mousePosition;
+        //     }
+        // }
+        // if (Input.GetMouseButtonUp(0) && selectedObject)
+        // {
+        //     selectedObject = null;
+        // }
+
+        if (Input.touches.Length > 0) {
+            Touch touch = Input.GetTouch(0);
+            touchPosition = Camera.main.ScreenToWorldPoint(touch.position);
+            if (touch.phase == TouchPhase.Began) {
+                Debug.Log("Screen touched");                
+                Collider2D targetObject = Physics2D.OverlapPoint(touchPosition);
+                if (targetObject)
+                {
+                    selectedObject = targetObject.transform.gameObject.GetComponent<Rigidbody2D>();
+                    offset = selectedObject.transform.position - touchPosition;
+                }
             }
-        }
-        if (Input.GetMouseButtonUp(0) && selectedObject)
-        {
-            selectedObject = null;
+            if (touch.phase == TouchPhase.Ended && selectedObject) {
+                Debug.Log("Touch ended");
+                selectedObject = null;
+            }
         }
     }
 
@@ -81,8 +101,4 @@ public class DragSprite : MonoBehaviour
             timeDisplayScript.ResetSymbol(other.gameObject.tag, gameObject.tag);
         }
     }
-
-
-
-
 }
