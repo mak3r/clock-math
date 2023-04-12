@@ -3,10 +3,12 @@ using UnityEngine.UI;
 
 public class TimeDisplayScript : MonoBehaviour
 {
+    public Equation equation;
     public Sprite[] numberSprites; // An array of the sprite images for the numbers 0-9 and the colon symbol
     private RectTransform clockRowRectTrans;
     private RectTransform symbolRowRectTrans;
     private HorizontalLayoutGroup layoutGroup;
+    private ParticleSystem emitter;
     private bool isMathMode = false;
     [SerializeField] private SecondsButton secondsButtonScript;
     private enum SPRITES {
@@ -51,7 +53,32 @@ public class TimeDisplayScript : MonoBehaviour
 
     public void StopTime(bool stop) {
         isMathMode = stop;
+        if (stop) {
+            if (separator.sprite == numberSprites[(int)SPRITES.COLON]) {
+                separator.sprite = null;
+            }
+        }
+
+        if (!stop) {
+            if (equation.Evaluate()) {
+                emitter = GameObject.Find("SuccessEmitter").GetComponent<ParticleSystem>();
+                emitter.Play();
+            }
+        }
         ResetLayout();
+    }
+
+    private string GetSymbolAsString(Sprite symbol) {
+        if (symbol.name == "plus") {
+            return "+";
+        }
+        if (symbol.name == "minus") {
+            return "-";
+        }
+        if (symbol.name == "equals") {
+            return "=";
+        }
+        return "";
     }
 
     private void MathMode() {
@@ -67,17 +94,20 @@ public class TimeDisplayScript : MonoBehaviour
         // Update the sprites to display the current time
         if (hours/10 == 0) {
             Activate("hourtens", false);
+            Activate("mathA", false);
         } else {
             SpriteRenderer hourtens = GameObject.Find("hourtens").GetComponent<SpriteRenderer>();
             if(hourtens) {
                 hourtens.sprite = numberSprites[hours/10];
                 hourtens.enabled = true;
+                equation.eqValues[0]=(hours/10).ToString();
             }
         }
 
         SpriteRenderer hourones = GameObject.Find("hourones").GetComponent<SpriteRenderer>();
         if(hourones) {
             hourones.sprite = numberSprites[hours % 10]; 
+            equation.eqValues[2] = (hours%10).ToString();
         }
 
         if(separator) {
@@ -89,11 +119,13 @@ public class TimeDisplayScript : MonoBehaviour
         SpriteRenderer minutestens = GameObject.Find("minutestens").GetComponent<SpriteRenderer>();
         if(hourones) {
             minutestens.sprite = numberSprites[minutes / 10]; 
+            equation.eqValues[4] = (minutes/10).ToString();
         }
         
         SpriteRenderer minutesones = GameObject.Find("minutesones").GetComponent<SpriteRenderer>();
         if(minutesones) {
             minutesones.sprite = numberSprites[minutes % 10]; 
+            equation.eqValues[6] = (minutes%10).ToString();
         }
 
     }
@@ -136,19 +168,24 @@ public class TimeDisplayScript : MonoBehaviour
     }
 
     public void UpdateSymbol(string targetObj, string symbol) {
-        // Debug.Log("TimeDisplayScript.UpdateSymbol()");
+        Debug.Log("TimeDisplayScript.UpdateSymbol()");
         // Debug.Log("targetObj: " + targetObj + ", symbol: " + symbol);
         GameObject obj = clockRowRectTrans.Find(targetObj).gameObject;
         Sprite sprite = GetSymbolByName(symbol);
+        string strSymbol = GetSymbolAsString(sprite);
+        Debug.Log("strSymbol: " + strSymbol);
         if (targetObj == "mathA") {
             lastSpriteMathA = mathA.sprite;
             mathA.sprite = sprite;
+            equation.eqValues[1] = strSymbol;
         } else if (targetObj == "mathB") {
             lastSpriteMathB = mathB.sprite;
             mathB.sprite = sprite;
+            equation.eqValues[5] = strSymbol;
         } else if (targetObj == "separator") {
             lastSpriteSeparator = separator.sprite;
             separator.sprite = sprite;
+            equation.eqValues[3] = strSymbol;
         }
         isMathMode = (sprite != null && secondsButtonScript.Freeze());
     }
@@ -158,10 +195,13 @@ public class TimeDisplayScript : MonoBehaviour
         GameObject obj = clockRowRectTrans.Find(targetObj).gameObject;
         if (targetObj == "mathA") {
             mathA.sprite = lastSpriteMathA;
+            equation.eqValues[1] = GetSymbolAsString(lastSpriteMathA);
         } else if (targetObj == "mathB") {
             mathB.sprite = lastSpriteMathB;
+            equation.eqValues[5] = GetSymbolAsString(lastSpriteMathB);
         } else if (targetObj == "separator") {
             separator.sprite = lastSpriteSeparator;
+            equation.eqValues[3] = GetSymbolAsString(lastSpriteSeparator);
         }
     }
 

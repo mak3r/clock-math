@@ -11,6 +11,7 @@ public class DragSprite : MonoBehaviour
     private Vector3 mousePosition;
     private Vector3 touchPosition;
     private Vector2 basePosition;
+    List<string> symbolsList = new List<string> {"Plus", "Minus", "Equals"};
 
     private void Start()
     {
@@ -22,23 +23,6 @@ public class DragSprite : MonoBehaviour
         }
     }
 
-    private void Awake() {
-
-    }
-
-    private void OnMouseDown()
-    {
-        // Debug.Log("Mouse Down ********* ");
-        selectedObject = GetComponent<Rigidbody2D>();
-        basePosition = selectedObject.position;
-        selectedObject = null;
-    }
-
-    private void OnMouseDrag()
-    {
-
-    }
-
     private void FixedUpdate() {
         if (selectedObject) {
             // selectedObject.MovePosition(mousePosition + offset);
@@ -46,44 +30,28 @@ public class DragSprite : MonoBehaviour
         }
     }
 
-    private void OnMouseUp()
-    {
-        // Debug.Log("Mouse Up ********* ");
-        selectedObject.MovePosition(basePosition);
-    }
 
     void Update()
     {
-        // mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        // if (Input.GetMouseButtonDown(0))
-        // {
-        //     Collider2D targetObject = Physics2D.OverlapPoint(mousePosition);
-        //     if (targetObject)
-        //     {
-        //         selectedObject = targetObject.transform.gameObject.GetComponent<Rigidbody2D>();
-        //         offset = selectedObject.transform.position - mousePosition;
-        //     }
-        // }
-        // if (Input.GetMouseButtonUp(0) && selectedObject)
-        // {
-        //     selectedObject = null;
-        // }
-
-        if (Input.touches.Length > 0) {
+        if (Input.touchCount > 0) {
             Touch touch = Input.GetTouch(0);
-            touchPosition = Camera.main.ScreenToWorldPoint(touch.position);
-            if (touch.phase == TouchPhase.Began) {
-                Debug.Log("Screen touched");                
-                Collider2D targetObject = Physics2D.OverlapPoint(touchPosition);
-                if (targetObject)
-                {
-                    selectedObject = targetObject.transform.gameObject.GetComponent<Rigidbody2D>();
-                    offset = selectedObject.transform.position - touchPosition;
+            if (touch.fingerId == 0) {
+                touchPosition = Camera.main.ScreenToWorldPoint(touch.position);
+                if (touch.phase == TouchPhase.Began) {
+                    Collider2D targetObject = Physics2D.OverlapPoint(touchPosition);
+                    if (targetObject)
+                    {
+                        if (symbolsList.Contains( targetObject.gameObject.tag)) {
+                            selectedObject = targetObject.transform.gameObject.GetComponent<Rigidbody2D>();
+                            basePosition = selectedObject.position;
+                            offset = selectedObject.transform.position - touchPosition;
+                        }
+                    }
                 }
-            }
-            if (touch.phase == TouchPhase.Ended && selectedObject) {
-                Debug.Log("Touch ended");
-                selectedObject = null;
+                if (touch.phase == TouchPhase.Ended && selectedObject) {
+                    selectedObject.MovePosition(basePosition);
+                    selectedObject = null;
+                }
             }
         }
     }
@@ -96,9 +64,11 @@ public class DragSprite : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        // Debug.Log("DragSprite.OnTriggerExit2D()");
-        if (Input.GetMouseButton(0)) {
-            timeDisplayScript.ResetSymbol(other.gameObject.tag, gameObject.tag);
+        if (Input.touches.Length > 0) {
+            Touch touch = Input.GetTouch(0);
+            if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary) {
+                timeDisplayScript.ResetSymbol(other.gameObject.tag, gameObject.tag);
+            }
         }
     }
 }
