@@ -68,19 +68,6 @@ public class TimeDisplayScript : MonoBehaviour
         ResetLayout();
     }
 
-    private string GetSymbolAsString(Sprite symbol) {
-        if (symbol.name == "plus") {
-            return "+";
-        }
-        if (symbol.name == "minus") {
-            return "-";
-        }
-        if (symbol.name == "equals") {
-            return "=";
-        }
-        return "";
-    }
-
     private void MathMode() {
         separator.enabled = true;
     }
@@ -165,6 +152,19 @@ public class TimeDisplayScript : MonoBehaviour
         }
         return symbolSprite;
 
+    }
+
+    private string GetSymbolAsString(Sprite symbol) {
+        if (symbol.name == "plus") {
+            return "+";
+        }
+        if (symbol.name == "minus") {
+            return "-";
+        }
+        if (symbol.name == "equals") {
+            return "=";
+        }
+        return "";
     }
 
     public void UpdateSymbol(string targetObj, string symbol) {
