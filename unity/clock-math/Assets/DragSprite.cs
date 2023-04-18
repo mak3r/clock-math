@@ -41,6 +41,7 @@ public class DragSprite : MonoBehaviour
                     Collider2D targetObject = Physics2D.OverlapPoint(touchPosition);
                     if (targetObject)
                     {
+                        //Pickup rigidbody
                         if (symbolsList.Contains( targetObject.gameObject.tag)) {
                             selectedObject = targetObject.transform.gameObject.GetComponent<Rigidbody2D>();
                             basePosition = selectedObject.position;
@@ -48,7 +49,8 @@ public class DragSprite : MonoBehaviour
                         }
                     }
                 }
-                if (touch.phase == TouchPhase.Ended && selectedObject) {
+                //Restore rigidbody to its original position
+                if ((touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled) && selectedObject) {
                     selectedObject.MovePosition(basePosition);
                     selectedObject = null;
                 }
