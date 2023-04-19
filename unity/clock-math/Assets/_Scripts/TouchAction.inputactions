@@ -1,0 +1,54 @@
+{
+    "name": "TouchAction",
+    "maps": [
+        {
+            "name": "Touch",
+            "id": "4ac0a74b-4a26-4e13-9b5f-f2ae6a7fd6e9",
+            "actions": [
+                {
+                    "name": "Select",
+                    "type": "Value",
+                    "id": "92c33577-7d54-425d-adb2-3deb8c6fe1ce",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "Hold,Press",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Move",
+                    "type": "Value",
+                    "id": "ea61c993-c8ce-4f02-94bb-96f166b865d4",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "df4c073c-13fa-4b47-a005-af2c430da0e7",
+                    "path": "<Touchscreen>/touch0/startPosition",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "72fa2948-e8b2-4229-8187-5d41af4f19c7",
+                    "path": "<Touchscreen>/touch0/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
