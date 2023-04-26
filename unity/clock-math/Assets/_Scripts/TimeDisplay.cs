@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TimeDisplayScript : MonoBehaviour
+[DefaultExecutionOrder(-2)]
+public class TimeDisplay : Singleton<TimeDisplay>
 {
     public Equation equation;
     public Sprite[] numberSprites; // An array of the sprite images for the numbers 0-9 and the colon symbol
@@ -119,7 +120,7 @@ public class TimeDisplayScript : MonoBehaviour
 
     private void ResetLayout() {
         // Calculate the size of the LayoutGroup
-        // Debug.Log("TimeDisplayScript.ResetLayout()");
+        // Debug.Log("TimeDisplay.ResetLayout()");
         GameObject obj = clockRowRectTrans.Find("hourtens").gameObject;
         if (isMathMode) {
             if (obj.activeSelf) {
@@ -168,7 +169,7 @@ public class TimeDisplayScript : MonoBehaviour
     }
 
     public void UpdateSymbol(string targetObj, string symbol) {
-        Debug.Log("TimeDisplayScript.UpdateSymbol()");
+        Debug.Log("TimeDisplay.UpdateSymbol()");
         // Debug.Log("targetObj: " + targetObj + ", symbol: " + symbol);
         GameObject obj = clockRowRectTrans.Find(targetObj).gameObject;
         Sprite sprite = GetSymbolByName(symbol);
@@ -191,7 +192,7 @@ public class TimeDisplayScript : MonoBehaviour
     }
 
     public void ResetSymbol(string targetObj, string symbol) {
-        // Debug.Log("TimeDisplayScript.ResetSymbol()");
+        // Debug.Log("TimeDisplay.ResetSymbol()");
         GameObject obj = clockRowRectTrans.Find(targetObj).gameObject;
         if (targetObj == "mathA") {
             mathA.sprite = lastSpriteMathA;

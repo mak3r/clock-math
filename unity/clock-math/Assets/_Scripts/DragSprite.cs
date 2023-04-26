@@ -1,18 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DragSprite : MonoBehaviour
 {
+    private TouchManager touchManager;
+    private Vector3 touchPosition;
+    private Vector2 basePosition;
+    
     private RectTransform clockRowRectTrans;
-    public TimeDisplayScript timeDisplayScript;
+    public TimeDisplay timeDisplay;
     private Rigidbody2D selectedObject;
     private Vector3 offset;
     private Vector3 mousePosition;
-    private Vector3 touchPosition;
-    private Vector2 basePosition;
     List<string> symbolsList = new List<string> {"Plus", "Minus", "Equals"};
 
+    private void Awake() {
+        touchManager = TouchManager.Instance;
+        timeDisplay = TimeDisplay.Instance;
+    }
     private void Start()
     {
         // Find and get ClockRow RectTransform component
@@ -21,6 +25,28 @@ public class DragSprite : MonoBehaviour
         {
             clockRowRectTrans = clockRow.GetComponent<RectTransform>();
         }
+    }
+
+    private void OnEnable(){
+        touchManager.OnSelectItem += DragStart;
+        touchManager.OnReleaseItem += DragEnd;
+    }
+
+    private void OnDisable() {
+        touchManager.OnSelectItem -= DragStart;
+        touchManager.OnReleaseItem -= DragEnd;
+    }
+
+    private void DragStart(Vector2 position) {
+        basePosition = position;
+    }
+
+    private void DragEnd(Vector2 position) {
+        Reset();
+    }
+
+    private void Reset() {
+
     }
 
     private void FixedUpdate() {
@@ -61,7 +87,7 @@ public class DragSprite : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         // Debug.Log("DragSprite.OnTriggerEnter2D()");
-        timeDisplayScript.UpdateSymbol(other.gameObject.tag, gameObject.tag);
+        timeDisplay.UpdateSymbol(other.gameObject.tag, gameObject.tag);
     }
 
     private void OnTriggerExit2D(Collider2D other)
@@ -69,7 +95,7 @@ public class DragSprite : MonoBehaviour
         if (Input.touches.Length > 0) {
             Touch touch = Input.GetTouch(0);
             if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary) {
-                timeDisplayScript.ResetSymbol(other.gameObject.tag, gameObject.tag);
+                timeDisplay.ResetSymbol(other.gameObject.tag, gameObject.tag);
             }
         }
     }

@@ -9,11 +9,15 @@ public class SecondsButton : MonoBehaviour
     [SerializeField] private Image clockImage;
     [SerializeField] private Color clockColor;
     [SerializeField] private Button button;
-    [SerializeField] private TimeDisplayScript timeDisplayScript;
+    [SerializeField] private TimeDisplay timeDisplay;
     private Color defaultColor = Color.green;
     private Color selectedColor = Color.red;
     private Color hoverColor = Color.cyan;
     private bool isTimeStopped = false;
+
+    private void Awake() {
+        timeDisplay = TimeDisplay.Instance();
+    }
 
     // Start is called before the first frame update
     private void Start()
@@ -48,14 +52,14 @@ public class SecondsButton : MonoBehaviour
     public bool Freeze() {
         clockImage.color = selectedColor;
         isTimeStopped = true;
-        timeDisplayScript.StopTime(isTimeStopped);
+        timeDisplay.StopTime(isTimeStopped);
         return isTimeStopped;
     }
 
     public bool Resume() {
         clockImage.color = defaultColor;
         isTimeStopped = false;
-        timeDisplayScript.StopTime(isTimeStopped);
+        timeDisplay.StopTime(isTimeStopped);
         return isTimeStopped;
     }
 

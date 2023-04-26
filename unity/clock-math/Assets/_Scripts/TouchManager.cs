@@ -1,46 +1,50 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class TouchManager : MonoBehaviour
+[DefaultExecutionOrder(-1)]
+public class TouchManager : Singleton<TouchManager>
 {
-    [SerializeField] private GameObject player;
+    #region Events
+    public delegate void Select(Vector2 position);
+    public event SelectItem OnSelectItem;    
+    public delegate void Release(Vector2 position);
+    public event ReleaseItem OnReleaseItem;
+    #endregion
 
-    private PlayerInput playerInput;
-
-    private InputAction selectAction;
-    private InputAction moveAction;
+    private PlayerControls playerControls;
+    private Camera mainCamera;
 
     private void Awake() {
-        playerInput = GetComponent<PlayerInput>();
-        moveAction = playerInput.actions["Move"];
-        selectAction = playerInput.actions["Select"];
+        playerControls = new PlayerControls();
+        mainCamera = Camera.main;
+    }
+
+    private void Start() {
+        playerControls.Touch.PrimaryContact.started += ctx => Selected(ctx);
+        playerControls.Touch.PrimaryContact.canceled += ctx => Released(ctx);
     }
 
     private void OnEnable() {
         Debug.Log("OnEnable");
-        selectAction.performed += Selected;
-        moveAction.performed += Move;
+        playerControls.Enable();
     }
 
     private void OnDisable() {
         Debug.Log("OnDisable");
-        selectAction.performed -= Selected;
-        moveAction.performed -= Move;
+        playerControls.Disable();
     }
+
+    
 
     private void Selected(InputAction.CallbackContext context) {
-        Vector2 value = context.ReadValue<Vector2>();
-        Debug.Log("Selected value: " + value);
-        Vector3 position = Camera.main.ScreenToWorldPoint(selectAction.ReadValue<Vector2>());
-        position.z = player.transform.position.z;
+        if (OnSelectItem != null) OnSelectItem(Utils.ScreenToWorld(mainCamera, playerControls.Touch.PrimaryPosition.ReadValue<Vector2>()));
     }
 
-    private void Move(InputAction.CallbackContext context) {
-        Vector2 value = context.ReadValue<Vector2>();
-        Debug.Log("Move value: " + value);
-        Vector3 position = Camera.main.ScreenToWorldPoint(moveAction.ReadValue<Vector2>());
-        // Maintain z position of original
-        position.z = player.transform.position.z;
-        player.transform.position = position;
+    private void Released(InputAction.CallbackContext context) {
+        if (OnReleaseItem != null) OnSelectItem(Utils.ScreenToWorld(mainCamera, playerControls.Touch.PrimaryPosition.ReadValue<Vector2>()));
+    }
+
+    public Vector2 PrimaryPosition() {
+        return Utils.ScreenToWorld(mainCamera, playerControls.Touch.PrimaryPosition.ReadValue<Vector2>());
     }
 }

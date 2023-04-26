@@ -7,17 +7,17 @@
             "actions": [
                 {
                     "name": "Select",
-                    "type": "Value",
+                    "type": "PassThrough",
                     "id": "92c33577-7d54-425d-adb2-3deb8c6fe1ce",
-                    "expectedControlType": "Vector2",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Hold,Press",
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Move",
-                    "type": "Value",
-                    "id": "ea61c993-c8ce-4f02-94bb-96f166b865d4",
+                    "name": "Release",
+                    "type": "PassThrough",
+                    "id": "0f288c5d-850e-4043-b301-bf433411602a",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
@@ -28,7 +28,7 @@
                 {
                     "name": "",
                     "id": "df4c073c-13fa-4b47-a005-af2c430da0e7",
-                    "path": "<Touchscreen>/touch0/startPosition",
+                    "path": "<Touchscreen>/primaryTouch/press",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -38,12 +38,12 @@
                 },
                 {
                     "name": "",
-                    "id": "72fa2948-e8b2-4229-8187-5d41af4f19c7",
-                    "path": "<Touchscreen>/touch0/position",
+                    "id": "346ac491-9a1a-4478-92a9-54d6cbf1f67e",
+                    "path": "<Touchscreen>/primaryTouch/position",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move",
+                    "action": "Release",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

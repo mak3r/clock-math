@@ -322,7 +322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 631fe2e6067564349ab1e4e410dedbde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeDisplayScript: {fileID: 519420033}
+  timeDisplay: {fileID: 519420033}
 --- !u!61 &154040726
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5747,7 +5747,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 631fe2e6067564349ab1e4e410dedbde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeDisplayScript: {fileID: 519420033}
+  timeDisplay: {fileID: 519420033}
 --- !u!1 &427891454
 GameObject:
   m_ObjectHideFlags: 0
@@ -5898,7 +5898,7 @@ MonoBehaviour:
   clockImage: {fileID: 427891457}
   clockColor: {r: 1, g: 1, b: 1, a: 0.003921569}
   button: {fileID: 427891456}
-  timeDisplayScript: {fileID: 519420033}
+  timeDisplay: {fileID: 519420033}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -6182,12 +6182,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 659025910}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 631fe2e6067564349ab1e4e410dedbde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeDisplayScript: {fileID: 519420033}
+  timeDisplay: {fileID: 519420033}
 --- !u!61 &659025916
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -6195,7 +6195,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 659025910}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -6223,7 +6223,7 @@ Rigidbody2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 659025910}
   m_BodyType: 1
-  m_Simulated: 1
+  m_Simulated: 0
   m_UseFullKinematicContacts: 1
   m_UseAutoMass: 0
   m_Mass: 1
@@ -6349,6 +6349,82 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &734935040
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 734935043}
+  - component: {fileID: 734935042}
+  - component: {fileID: 734935041}
+  m_Layer: 0
+  m_Name: TouchManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &734935041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 734935040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18b10893052564508882f42ad5b75a04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 659025910}
+--- !u!114 &734935042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 734935040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: a4d3bd36af45646c89b42b3ad46e79fe, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Touch
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
+--- !u!4 &734935043
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 734935040}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.5514543, y: -0.14663236, z: 0.006842987}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1067172413
 GameObject:
   m_ObjectHideFlags: 0
